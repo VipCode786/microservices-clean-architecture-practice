@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using eCommerce.Core.DTO;
 using eCommerce.Core.Entities;
 using eCommerce.Core.RepositoryContracts;
@@ -9,10 +10,13 @@ namespace eCommerce.Core.Services
     internal class UserServices : IUserServices
     {
         private readonly IUserRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-        public UserServices(IUserRepository usersRepository)
+        public UserServices(IUserRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
+            _mapper = mapper;
+          
         }
 
         public async Task<AuthenticationResponse?> Login(LoginRequest loginRequest)
@@ -22,20 +26,20 @@ namespace eCommerce.Core.Services
             {
                 return null;
             }
-
-            return new AuthenticationResponse(user.UserID, user.Email, user.PersonName, user.Gender, "token", Success: true);
+            return _mapper.Map<AuthenticationResponse>(user) with { Success = true, Token = "token" };
+            //return new AuthenticationResponse(user.UserID, user.Email, user.PersonName, user.Gender, "token", Success: true);
         }
 
         public async Task<AuthenticationResponse?> Register(RegisterRequest registerRequest)
         {
-            ApplicationUser user = new ApplicationUser()
-            {
-                PersonName = registerRequest.PersonName,
-                Email = registerRequest.Email,
-                Password = registerRequest.Password,
-                Gender = registerRequest.Gender.ToString()
-            };
-
+            /* ApplicationUser user = new ApplicationUser()
+             {
+                 PersonName = registerRequest.PersonName,
+                 Email = registerRequest.Email,
+                 Password = registerRequest.Password,
+                 Gender = registerRequest.Gender.ToString()
+             };*/
+            ApplicationUser user = _mapper.Map<ApplicationUser>(registerRequest);
             ApplicationUser? registeredUser = await _usersRepository.AddUser(user);
 
             if (registeredUser == null)
@@ -43,7 +47,8 @@ namespace eCommerce.Core.Services
                 return null;
             }
 
-            return new AuthenticationResponse(registeredUser.UserID, registeredUser.Email, registeredUser.PersonName, registeredUser.Gender, "token", Success: true);
+            return _mapper.Map<AuthenticationResponse>(registeredUser) with { Success = true, Token = "token" };
+            // return new AuthenticationResponse(registeredUser.UserID, registeredUser.Email, registeredUser.PersonName, registeredUser.Gender, "token", Success: true);
         }
     }
 }

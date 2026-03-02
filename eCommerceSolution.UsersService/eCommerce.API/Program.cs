@@ -2,6 +2,7 @@ using eCommerce.Infrastructure;
 using eCommerce.Core;
 using eCommerce.API.Middlewares;
 using System.Text.Json.Serialization;
+using eCommerce.Core.Mappers;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add Infrastructure Services
@@ -11,6 +12,8 @@ builder.Services.AddCore();
 //Add controllers to the service collection
 builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
+builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile).Assembly);
+//builder.Services.AddAutoMapper(typeof(RegisterRequestMappingProfile).Assembly);//Explicitly adding another profile is only necessary if it’s in a different assembly.
 //Build the web application
 var app = builder.Build();
 

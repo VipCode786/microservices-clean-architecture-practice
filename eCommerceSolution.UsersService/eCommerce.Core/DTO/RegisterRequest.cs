@@ -9,5 +9,13 @@ namespace eCommerce.Core.DTO
         string? PersonName,
         GenderOptions Gender
         
-    );
+    )
+    {
+        // Parameterless constructor
+
+        public RegisterRequest() : this(default, default, default, default)
+        {
+        }
+    }
+
 }

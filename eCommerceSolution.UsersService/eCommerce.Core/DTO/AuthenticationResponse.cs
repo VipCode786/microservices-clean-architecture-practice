@@ -1,7 +1,7 @@
 ﻿
 namespace eCommerce.Core.DTO
 {
-    public record  AuthenticationResponse
+    public record AuthenticationResponse
     (
         Guid UserID,
         string? Email,
@@ -9,5 +9,11 @@ namespace eCommerce.Core.DTO
         string? Gender,
         string? Token,
         bool Success
-    );
+    )
+    {
+        // Parameterless constructor
+        public AuthenticationResponse() : this(default, null, null, null, null, false)
+        {
+        }
+    };
 }
