@@ -12,7 +12,7 @@ namespace eCommerce.Core.DTO
     )
     {
         // Parameterless constructor
-        public AuthenticationResponse() : this(default, null, null, null, null, false)
+        public AuthenticationResponse() : this(default, default, default, default, default, default)
         {
         }
     };

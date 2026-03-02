@@ -3,6 +3,7 @@ using eCommerce.Core;
 using eCommerce.API.Middlewares;
 using System.Text.Json.Serialization;
 using eCommerce.Core.Mappers;
+using FluentValidation.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add Infrastructure Services
@@ -14,6 +15,9 @@ builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerial
 
 builder.Services.AddAutoMapper(typeof(ApplicationUserMappingProfile).Assembly);
 //builder.Services.AddAutoMapper(typeof(RegisterRequestMappingProfile).Assembly);//Explicitly adding another profile is only necessary if it’s in a different assembly.
+
+//fluent
+builder.Services.AddFluentValidationAutoValidation();
 //Build the web application
 var app = builder.Build();
 
