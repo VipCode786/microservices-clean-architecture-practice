@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Context;
 using DataAccessLayer.Entities;
 using DataAccessLayer.RepositoryContracts;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repositories
@@ -13,34 +14,58 @@ namespace DataAccessLayer.Repositories
         {
             _dbContext = dbContext;
         }
-        public Task<Product?> AddProduct(Product product)
+        public async Task<Product?> AddProduct(Product product)
         {
-            throw new NotImplementedException();
+            _dbContext.Products.Add(product);
+            await _dbContext.SaveChangesAsync();
+            return product;
         }
 
-        public Task<bool> DeleteProduct(Guid productID)
+        public async Task<bool> DeleteProduct(Guid productID)
         {
-            throw new NotImplementedException();
+            Product? existingProduct = await _dbContext.Products.FirstOrDefaultAsync(temp => temp.ProductID == productID);
+            if (existingProduct == null)
+            {
+                return false;
+            }
+            _dbContext.Products.Remove(existingProduct);
+
+            int affectedRowsCount = await _dbContext.SaveChangesAsync();
+
+            return affectedRowsCount > 0;
         }
 
-        public Task<Product?> GetProductByCondition(Expression<Func<Product, bool>> conditionExpression)
+        public async Task<Product?> GetProductByCondition(Expression<Func<Product, bool>> conditionExpression)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Products.FirstOrDefaultAsync(conditionExpression);
         }
 
-        public Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<Product>> GetProducts()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Products.ToListAsync();
         }
 
-        public Task<IEnumerable<Product?>> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression)
+        public async Task<IEnumerable<Product?>> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Products.Where(conditionExpression).ToListAsync();
         }
 
-        public Task<Product?> UpdateProduct(Product product)
+        public async Task<Product?> UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
+            Product? existingProduct = await _dbContext.Products.FirstOrDefaultAsync(temp => temp.ProductID == product.ProductID);
+            if (existingProduct == null)
+            {
+                return null;
+            }
+
+            existingProduct.ProductName = product.ProductName;
+            existingProduct.UnitPrice = product.UnitPrice;
+            existingProduct.QuantityInStock = product.QuantityInStock;
+            existingProduct.Category = product.Category;
+
+            await _dbContext.SaveChangesAsync();
+
+            return existingProduct;
         }
     }
 }
