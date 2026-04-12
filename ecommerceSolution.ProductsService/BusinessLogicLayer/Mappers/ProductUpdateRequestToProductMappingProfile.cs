@@ -4,7 +4,7 @@ using DataAccessLayer.Entities;
 
 namespace BusinessLogicLayer.Mappers
 {
-    internal class ProductUpdateRequestToProductMappingProfile : Profile
+    public class ProductUpdateRequestToProductMappingProfile : Profile
     {
         public ProductUpdateRequestToProductMappingProfile()
         {

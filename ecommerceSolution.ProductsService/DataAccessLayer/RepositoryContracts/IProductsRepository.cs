@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace DataAccessLayer.RepositoryContracts
 {
-    internal interface IProductsRepository
+    public interface IProductsRepository
     {
         Task<IEnumerable<Product>> GetProducts();
         Task<IEnumerable<Product?>> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression);
