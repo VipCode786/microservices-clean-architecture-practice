@@ -17,7 +17,7 @@ namespace BusinessLogicLayer.Validators
             RuleFor(temp => temp.Category).IsInEnum().WithMessage("Category can't be blank");
 
             //UnitPrice
-            RuleFor(temp => temp.UnitPrice).InclusiveBetween(0, double.MaxValue).WithMessage($"Unit Price should between 0 to {double.MaxValue}");
+            RuleFor(temp => temp.UnitPrice).InclusiveBetween(0, decimal.MaxValue).WithMessage($"Unit Price should between 0 to {decimal.MaxValue}");
 
             //QuantityInStock
             RuleFor(temp => temp.QuantityInStock).InclusiveBetween(0, int.MaxValue).WithMessage($"Quantity in Stock should between 0 to {int.MaxValue}");

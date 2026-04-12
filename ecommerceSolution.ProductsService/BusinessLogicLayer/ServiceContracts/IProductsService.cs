@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace BusinessLogicLayer.ServiceContracts
 {
-    internal interface IProductsService
+    public interface IProductsService
     {
         Task<List<ProductResponse?>> GetProducts();
         Task<List<ProductResponse?>> GetProductsByCondition(Expression<Func<Product, bool>> conditionExpression);

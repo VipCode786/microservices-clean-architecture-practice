@@ -15,7 +15,7 @@ IF NOT EXISTS (SELECT * FROM sys.tables
                WHERE name = 'products')
 BEGIN
     CREATE TABLE products (
-        ProductID CHAR(36) NOT NULL,
+        ProductID uniqueidentifier  NOT NULL,
         ProductName VARCHAR(50) NOT NULL,
         Category VARCHAR(50) DEFAULT NULL,
         UnitPrice DECIMAL(10,2) DEFAULT NULL,
