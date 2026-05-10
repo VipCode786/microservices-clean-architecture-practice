@@ -40,3 +40,4 @@ INSERT INTO products (ProductID, ProductName, Category, UnitPrice, QuantityInSto
 ('11f2e86a-9d5d-42f9-b3c2-3e4d652e3df8', 'Executive Office Desk', 'Furniture', 299.99, 18),
 ('12b369b7-9101-41b1-a653-6c6c9a4fe1e4', 'Breville Smart Blender', 'HomeAppliances', 129.99, 50);
 GO
+
