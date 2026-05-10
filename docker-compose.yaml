@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sql_container
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPassword@2026
+    ports:
+      - "1433:1433"
+    networks:
+      - productsmicroservice-network
+    hostname: mysql-host-productsmicroservice
+
+  sql-init:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - sql
+    volumes:
+      - ./sql-init:/scripts
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Waiting for SQL Server...';
+      sleep 20;
+      /opt/mssql-tools/bin/sqlcmd -S sql -U sa -P '***************' -i /scripts/SQLQuery1.sql;
+      echo 'Database created!';
+      "
+    networks:
+      - productsmicroservice-network
+
+  api:
+    image: vipcode786/ecommerce-products-microservice:v1.0
+    environment:
+        host: mysql-host-productsmicroservice
+        password: **************
+    container_name: products_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sql
+      - sql-init
+    networks:
+      - productsmicroservice-network
+
+networks:
+  productsmicroservice-network:
